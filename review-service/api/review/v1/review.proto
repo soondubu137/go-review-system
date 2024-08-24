@@ -2,20 +2,38 @@ syntax = "proto3";
 
 package api.review.v1;
 
+import "google/api/annotations.proto";
+
 option go_package = "review-service/api/review/v1;v1";
-option java_multiple_files = true;
-option java_package = "api.review.v1";
 
 service Review {
-	rpc CreateReview (CreateReviewRequest) returns (CreateReviewReply);
+	rpc CreateReview (CreateReviewRequest) returns (CreateReviewReply) {
+        option (google.api.http) = {
+            post: "'/v1/review",
+            body: "*"
+        };
+    };
 	rpc UpdateReview (UpdateReviewRequest) returns (UpdateReviewReply);
 	rpc DeleteReview (DeleteReviewRequest) returns (DeleteReviewReply);
 	rpc GetReview (GetReviewRequest) returns (GetReviewReply);
 	rpc ListReview (ListReviewRequest) returns (ListReviewReply);
 }
 
-message CreateReviewRequest {}
-message CreateReviewReply {}
+message CreateReviewRequest {
+    string userID = 1;
+    string orderID = 2;
+    int32 rating = 3;
+    int32 serviceRating = 4;
+    int32 deliveryRating = 5;
+    string content = 6;
+    string picture = 7;
+    string video = 8;
+    bool isAnonymous = 9;
+}
+
+message CreateReviewReply {
+    string reviewID = 1;
+}
 
 message UpdateReviewRequest {}
 message UpdateReviewReply {}
