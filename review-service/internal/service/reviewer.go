@@ -2,9 +2,11 @@ package service
 
 import (
 	"context"
+	"strconv"
 
 	pb "review-service/api/review/v1"
 	"review-service/internal/biz"
+	"review-service/internal/data/model"
 )
 
 type ReviewService struct {
@@ -18,7 +20,8 @@ func NewReviewService(uc *biz.ReviewerUsecase) *ReviewService {
 }
 
 func (s *ReviewService) CreateReview(ctx context.Context, req *pb.CreateReviewRequest) (*pb.CreateReviewReply, error) {
-	return &pb.CreateReviewReply{}, nil
+	res, err := s.uc.CreateReview(ctx, &model.Review{})
+	return &pb.CreateReviewReply{ReviewID: strconv.FormatInt(res.ReviewID, 10)}, err
 }
 func (s *ReviewService) UpdateReview(ctx context.Context, req *pb.UpdateReviewRequest) (*pb.UpdateReviewReply, error) {
 	return &pb.UpdateReviewReply{}, nil
