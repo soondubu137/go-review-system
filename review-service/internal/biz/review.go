@@ -2,7 +2,7 @@ package biz
 
 import (
 	"context"
-	"errors"
+	pb "review-service/api/review/v1"
 	"review-service/internal/data/model"
 	"review-service/pkg/snowflake"
 
@@ -36,11 +36,11 @@ func (uc *ReviewerUsecase) CreateReview(ctx context.Context, review *model.Revie
 	r, err := uc.repo.GetReviewByOrderID(ctx, review.OrderID)
 	if err != nil {
 		uc.log.Errorf("GetReviewByOrderID error: %v", err)
-		return nil, errors.New("internal error")
+		return nil, pb.ErrorInternal("Internal Server Error")
 	}
 	if r != nil {
-		uc.log.Errorf("Review already exists: %v", r.OrderID)
-		return nil, errors.New("review already exists")
+		uc.log.Errorf("Review already exists: %d", r.OrderID)
+		return nil, pb.ErrorOrderAlreadyReviewed("Order %d already reviewed.", r.OrderID)
 	}
 
 	review.ReviewID = snowflake.GenID()
