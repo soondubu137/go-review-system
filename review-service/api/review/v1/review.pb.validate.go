@@ -57,8 +57,6 @@ func (m *CreateReviewRequest) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for UserID
-
 	// no validation rules for OrderID
 
 	if _, ok := _CreateReviewRequest_Rating_InLookup[m.GetRating()]; !ok {
@@ -234,6 +232,8 @@ func (m *CreateReviewReply) validate(all bool) error {
 	var errors []error
 
 	// no validation rules for ReviewID
+
+	// no validation rules for Status
 
 	if len(errors) > 0 {
 		return CreateReviewReplyMultiError(errors)

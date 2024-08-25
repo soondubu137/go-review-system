@@ -82,3 +82,27 @@ func IsOrderAlreadyReviewed(err error) bool {
 func ErrorOrderAlreadyReviewed(format string, args ...interface{}) *errors.Error {
 	return errors.New(400, ErrorReason_ORDER_ALREADY_REVIEWED.String(), fmt.Sprintf(format, args...))
 }
+
+func IsReviewAlreadyReplied(err error) bool {
+	if err == nil {
+		return false
+	}
+	e := errors.FromError(err)
+	return e.Reason == ErrorReason_REVIEW_ALREADY_REPLIED.String() && e.Code == 400
+}
+
+func ErrorReviewAlreadyReplied(format string, args ...interface{}) *errors.Error {
+	return errors.New(400, ErrorReason_REVIEW_ALREADY_REPLIED.String(), fmt.Sprintf(format, args...))
+}
+
+func IsUnauthorizedReply(err error) bool {
+	if err == nil {
+		return false
+	}
+	e := errors.FromError(err)
+	return e.Reason == ErrorReason_UNAUTHORIZED_REPLY.String() && e.Code == 403
+}
+
+func ErrorUnauthorizedReply(format string, args ...interface{}) *errors.Error {
+	return errors.New(403, ErrorReason_UNAUTHORIZED_REPLY.String(), fmt.Sprintf(format, args...))
+}

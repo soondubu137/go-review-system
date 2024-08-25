@@ -3,19 +3,19 @@
 
 openapi: 3.0.3
 info:
-    title: Review API
+    title: Reply API
     version: 0.0.1
 paths:
-    /v1/review:
+    /v1/reply:
         post:
             tags:
-                - Review
-            operationId: Review_CreateReview
+                - Reply
+            operationId: Reply_CreateReply
             requestBody:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/CreateReviewRequest'
+                            $ref: '#/components/schemas/CreateReplyRequest'
                 required: true
             responses:
                 "200":
@@ -23,7 +23,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/CreateReviewReply'
+                                $ref: '#/components/schemas/CreateReplyReply'
                 default:
                     description: Default error response
                     content:
@@ -32,27 +32,18 @@ paths:
                                 $ref: '#/components/schemas/Status'
 components:
     schemas:
-        CreateReviewReply:
+        CreateReplyReply:
+            type: object
+            properties:
+                replyID:
+                    type: string
+        CreateReplyRequest:
             type: object
             properties:
                 reviewID:
                     type: string
-        CreateReviewRequest:
-            type: object
-            properties:
                 userID:
                     type: string
-                orderID:
-                    type: string
-                rating:
-                    type: integer
-                    format: int32
-                serviceRating:
-                    type: integer
-                    format: int32
-                deliveryRating:
-                    type: integer
-                    format: int32
                 content:
                     type: string
                 pictures:
@@ -63,8 +54,6 @@ components:
                     type: array
                     items:
                         type: string
-                isAnonymous:
-                    type: boolean
         GoogleProtobufAny:
             type: object
             properties:
@@ -90,4 +79,4 @@ components:
                     description: A list of messages that carry the error details.  There is a common set of message types for APIs to use.
             description: 'The `Status` type defines a logical error model that is suitable for different programming environments, including REST APIs and RPC APIs. It is used by [gRPC](https://github.com/grpc). Each `Status` message contains three pieces of data: error code, error message, and error details. You can find out more about this error model and how to work with it in the [API Design Guide](https://cloud.google.com/apis/design/errors).'
 tags:
-    - name: Review
+    - name: Reply
