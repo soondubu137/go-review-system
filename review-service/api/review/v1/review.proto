@@ -21,19 +21,20 @@ service Review {
 }
 
 message CreateReviewRequest {
-    string userID = 1;
-    string orderID = 2;
-    int32 rating = 3 [(validate.rules).int32 = {in: [1,2,3,4,5]}];
-    int32 serviceRating = 4 [(validate.rules).int32 = {in: [1,2,3,4,5]}];
-    int32 deliveryRating = 5 [(validate.rules).int32 = {in: [1,2,3,4,5]}];
-    string content = 6 [(validate.rules).string = {min_len: 1, max_len: 1024}];
+    string          userID = 1 [(validate.rules).string = {}];
+    string          orderID = 2;
+    int32           rating = 3 [(validate.rules).int32 = {in: [1,2,3,4,5]}];
+    int32           serviceRating = 4 [(validate.rules).int32 = {in: [1,2,3,4,5]}];
+    int32           deliveryRating = 5 [(validate.rules).int32 = {in: [1,2,3,4,5]}];
+    string          content = 6 [(validate.rules).string = {min_len: 1, max_len: 1024}];
     repeated string pictures = 7;
     repeated string videos = 8;
-    bool isAnonymous = 9;
+    bool            isAnonymous = 9;
 }
 
 message CreateReviewReply {
     string reviewID = 1;
+    string status = 2;
 }
 
 message UpdateReviewRequest {}

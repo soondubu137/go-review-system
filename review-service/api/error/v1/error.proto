@@ -1,10 +1,10 @@
 syntax = "proto3";
 
-package api.review.v1;
+package api.error.v1;
 
 import "errors/errors.proto";
 
-option go_package = "review-service/api/review/v1;v1";
+option go_package = "review-service/api/error/v1;v1";
 
 enum ErrorReason {
     option (errors.default_code) = 500;
@@ -16,4 +16,6 @@ enum ErrorReason {
     INVALID_APPEAL_ID = 4 [(errors.code) = 400];
 
     ORDER_ALREADY_REVIEWED = 100 [(errors.code) = 400];
+    REVIEW_ALREADY_REPLIED = 101 [(errors.code) = 400];
+    UNAUTHORIZED_REPLY = 102 [(errors.code) = 403];
 }

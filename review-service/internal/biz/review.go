@@ -2,7 +2,7 @@ package biz
 
 import (
 	"context"
-	pb "review-service/api/review/v1"
+	errpb "review-service/api/error/v1"
 	"review-service/internal/data/model"
 	"review-service/pkg/snowflake"
 
@@ -11,6 +11,7 @@ import (
 
 type ReviewerRepo interface {
 	CreateReview(context.Context, *model.Review) (*model.Review, error)
+	FindByID(context.Context, int64) (*model.Review, error)
 	GetReviewByOrderID(context.Context, int64) (*model.Review, error)
 }
 
@@ -34,16 +35,19 @@ func (uc *ReviewerUsecase) CreateReview(ctx context.Context, review *model.Revie
 	// 5. Save the review data to the database.
 
 	r, err := uc.repo.GetReviewByOrderID(ctx, review.OrderID)
-	if err != nil {
-		uc.log.Errorf("GetReviewByOrderID error: %v", err)
-		return nil, pb.ErrorInternal("Internal Server Error")
+	if err != nil && err.Error() != "record not found" {
+		return nil, errpb.ErrorInternal("Internal Server Error")
 	}
 	if r != nil {
-		uc.log.Errorf("Review already exists: %d", r.OrderID)
-		return nil, pb.ErrorOrderAlreadyReviewed("Order %d already reviewed.", r.OrderID)
+		return nil, errpb.ErrorOrderAlreadyReviewed("Order %d already reviewed.", r.OrderID)
 	}
 
 	review.ReviewID = snowflake.GenID()
 
 	return uc.repo.CreateReview(ctx, review)
+}
+
+func (uc *ReviewerUsecase) FindByID(ctx context.Context, reviewID int64) (*model.Review, error) {
+	uc.log.WithContext(ctx).Debugf("[BIZ] FindByID - req: %v", reviewID)
+	return uc.repo.FindByID(ctx, reviewID)
 }
