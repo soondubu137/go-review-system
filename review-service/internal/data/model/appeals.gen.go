@@ -26,14 +26,14 @@ type Appeal struct {
 	Reason      string         `gorm:"column:reason;not null;comment:Appeal reason" json:"reason"`    // Appeal reason
 	Content     string         `gorm:"column:content;not null;comment:Appeal content" json:"content"` // Appeal content
 	SellerID    int64          `gorm:"column:seller_id;not null" json:"seller_id"`
-	Pictures    string         `gorm:"column:pictures;not null;default:[];comment:Appeal pictures" json:"pictures"` // Appeal pictures
-	Videos      string         `gorm:"column:videos;not null;default:[];comment:Appeal videos" json:"videos"`       // Appeal videos
+	Pictures    string         `gorm:"column:pictures;not null;comment:Appeal pictures" json:"pictures"` // Appeal pictures
+	Videos      string         `gorm:"column:videos;not null;comment:Appeal videos" json:"videos"`       // Appeal videos
 	Status      string         `gorm:"column:status;not null;default:PENDING" json:"status"`
-	OpNote      *string        `gorm:"column:op_note;comment:Operator note" json:"op_note"`                               // Operator note
-	OpProcessAt *time.Time     `gorm:"column:op_process_at;comment:Operator process time" json:"op_process_at"`           // Operator process time
-	OpProcessBy *int64         `gorm:"column:op_process_by;comment:Operator process user ID" json:"op_process_by"`        // Operator process user ID
-	ExtJSON     string         `gorm:"column:ext_json;not null;default:{};comment:Extended information" json:"ext_json"`  // Extended information
-	CtrlJSON    string         `gorm:"column:ctrl_json;not null;default:{};comment:Control information" json:"ctrl_json"` // Control information
+	OpNote      *string        `gorm:"column:op_note;comment:Operator note" json:"op_note"`                        // Operator note
+	OpProcessAt *time.Time     `gorm:"column:op_process_at;comment:Operator process time" json:"op_process_at"`    // Operator process time
+	OpProcessBy *int64         `gorm:"column:op_process_by;comment:Operator process user ID" json:"op_process_by"` // Operator process user ID
+	ExtJSON     string         `gorm:"column:ext_json;not null;comment:Extended information" json:"ext_json"`      // Extended information
+	CtrlJSON    string         `gorm:"column:ctrl_json;not null;comment:Control information" json:"ctrl_json"`     // Control information
 }
 
 // TableName Appeal's table name

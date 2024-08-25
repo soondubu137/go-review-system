@@ -31,6 +31,9 @@ func (r *reviewerRepo) GetReviewByOrderID(ctx context.Context, orderID int64) (*
 	R := r.data.q.Review
 	review, err := R.WithContext(ctx).Where(R.OrderID.Eq(orderID)).First()
 	if err != nil {
+		if err.Error() == "record not found" {
+			return nil, nil
+		}
 		return nil, err
 	}
 	return review, nil

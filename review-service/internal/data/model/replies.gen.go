@@ -25,10 +25,10 @@ type Reply struct {
 	ReviewID  int64          `gorm:"column:review_id;not null" json:"review_id"`
 	Content   string         `gorm:"column:content;not null" json:"content"`
 	SellerID  int64          `gorm:"column:seller_id;not null" json:"seller_id"`
-	Pictures  string         `gorm:"column:pictures;not null;default:[];comment:Reply pictures" json:"pictures"`        // Reply pictures
-	Videos    string         `gorm:"column:videos;not null;default:[];comment:Reply videos" json:"videos"`              // Reply videos
-	ExtJSON   string         `gorm:"column:ext_json;not null;default:{};comment:Extended information" json:"ext_json"`  // Extended information
-	CtrlJSON  string         `gorm:"column:ctrl_json;not null;default:{};comment:Control information" json:"ctrl_json"` // Control information
+	Pictures  string         `gorm:"column:pictures;not null;comment:Reply pictures" json:"pictures"`        // Reply pictures
+	Videos    string         `gorm:"column:videos;not null;comment:Reply videos" json:"videos"`              // Reply videos
+	ExtJSON   string         `gorm:"column:ext_json;not null;comment:Extended information" json:"ext_json"`  // Extended information
+	CtrlJSON  string         `gorm:"column:ctrl_json;not null;comment:Control information" json:"ctrl_json"` // Control information
 }
 
 // TableName Reply's table name

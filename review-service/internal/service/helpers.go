@@ -26,6 +26,12 @@ func createReviewReq2Model(req *pb.CreateReviewRequest) *model.Review {
 		DeliveryRating: req.DeliveryRating,
 		Content:        req.Content,
 		IsAnonymous:    req.IsAnonymous,
+		Pictures:       "[]",
+		Videos:         "[]",
+		Tags:           "[]",
+		Snapshot:       "{}",
+		ExtJSON:        "{}",
+		CtrlJSON:       "{}",
 	}
 	if len(req.Pictures) > 0 {
 		review.Pictures = marshalStrSlice(req.Pictures)

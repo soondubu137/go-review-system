@@ -27,8 +27,8 @@ type Review struct {
 	ServiceRating  int32          `gorm:"column:service_rating;not null;comment:Seller service rating" json:"service_rating"` // Seller service rating
 	DeliveryRating int32          `gorm:"column:delivery_rating;not null;comment:Delivery rating" json:"delivery_rating"`     // Delivery rating
 	HasMedia       bool           `gorm:"column:has_media;not null" json:"has_media"`
-	Pictures       string         `gorm:"column:pictures;not null;default:[];comment:Review pictures" json:"pictures"` // Review pictures
-	Videos         string         `gorm:"column:videos;not null;default:[];comment:Review videos" json:"videos"`       // Review videos
+	Pictures       string         `gorm:"column:pictures;not null;comment:Review pictures" json:"pictures"` // Review pictures
+	Videos         string         `gorm:"column:videos;not null;comment:Review videos" json:"videos"`       // Review videos
 	OrderID        int64          `gorm:"column:order_id;not null" json:"order_id"`
 	SkuID          int64          `gorm:"column:sku_id;not null" json:"sku_id"`
 	SpuID          int64          `gorm:"column:spu_id;not null" json:"spu_id"`
@@ -36,16 +36,16 @@ type Review struct {
 	BuyerID        int64          `gorm:"column:buyer_id;not null" json:"buyer_id"`
 	IsAnonymous    bool           `gorm:"column:is_anonymous;not null" json:"is_anonymous"`
 	Status         string         `gorm:"column:status;not null;default:PENDING" json:"status"`
-	Tags           string         `gorm:"column:tags;not null;default:[];comment:Related tags" json:"tags"` // Related tags
+	Tags           string         `gorm:"column:tags;not null;comment:Related tags" json:"tags"` // Related tags
 	IsDefault      bool           `gorm:"column:is_default;not null" json:"is_default"`
 	HasReply       bool           `gorm:"column:has_reply;not null" json:"has_reply"`
-	OpRejectReason *string        `gorm:"column:op_reject_reason;comment:Operator reject reason" json:"op_reject_reason"`     // Operator reject reason
-	OpRejectAt     *time.Time     `gorm:"column:op_reject_at;comment:Operator reject time" json:"op_reject_at"`               // Operator reject time
-	OpRejectBy     *int64         `gorm:"column:op_reject_by;comment:Operator reject user ID" json:"op_reject_by"`            // Operator reject user ID
-	OpNote         *string        `gorm:"column:op_note;comment:Operator note" json:"op_note"`                                // Operator note
-	Snapshot       string         `gorm:"column:snapshot;not null;default:{};comment:Snapshot of the review" json:"snapshot"` // Snapshot of the review
-	ExtJSON        string         `gorm:"column:ext_json;not null;default:{};comment:Extended information" json:"ext_json"`   // Extended information
-	CtrlJSON       string         `gorm:"column:ctrl_json;not null;default:{};comment:Control information" json:"ctrl_json"`  // Control information
+	OpRejectReason *string        `gorm:"column:op_reject_reason;comment:Operator reject reason" json:"op_reject_reason"` // Operator reject reason
+	OpRejectAt     *time.Time     `gorm:"column:op_reject_at;comment:Operator reject time" json:"op_reject_at"`           // Operator reject time
+	OpRejectBy     *int64         `gorm:"column:op_reject_by;comment:Operator reject user ID" json:"op_reject_by"`        // Operator reject user ID
+	OpNote         *string        `gorm:"column:op_note;comment:Operator note" json:"op_note"`                            // Operator note
+	Snapshot       string         `gorm:"column:snapshot;not null;comment:Snapshot of the review" json:"snapshot"`        // Snapshot of the review
+	ExtJSON        string         `gorm:"column:ext_json;not null;comment:Extended information" json:"ext_json"`          // Extended information
+	CtrlJSON       string         `gorm:"column:ctrl_json;not null;comment:Control information" json:"ctrl_json"`         // Control information
 }
 
 // TableName Review's table name
