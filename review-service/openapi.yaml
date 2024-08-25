@@ -6,7 +6,7 @@ info:
     title: Review API
     version: 0.0.1
 paths:
-    '''/v1/review':
+    /v1/review:
         post:
             tags:
                 - Review
