@@ -2,13 +2,16 @@ package biz
 
 import (
 	"context"
+	"errors"
 	"review-service/internal/data/model"
+	"review-service/pkg/snowflake"
 
 	"github.com/go-kratos/kratos/v2/log"
 )
 
 type ReviewerRepo interface {
 	CreateReview(context.Context, *model.Review) (*model.Review, error)
+	GetReviewByOrderID(context.Context, int64) (*model.Review, error)
 }
 
 type ReviewerUsecase struct {
@@ -26,9 +29,21 @@ func (uc *ReviewerUsecase) CreateReview(ctx context.Context, review *model.Revie
 	// To create a review, we follow the following steps:
 	// 1. Validate the input data.
 	// 2. Generate a unique ID for the review.
-	// 3. Look up the corresponding order/product information.
-	// 4. Assemble the review data.
+	// 3. Look up the corresponding order/product information. (not implemented)
+	// 4. Assemble the review data. (not needed)
 	// 5. Save the review data to the database.
+
+	r, err := uc.repo.GetReviewByOrderID(ctx, review.OrderID)
+	if err != nil {
+		uc.log.Errorf("GetReviewByOrderID error: %v", err)
+		return nil, errors.New("internal error")
+	}
+	if r != nil {
+		uc.log.Errorf("Review already exists: %v", r.OrderID)
+		return nil, errors.New("review already exists")
+	}
+
+	review.ReviewID = snowflake.GenID()
 
 	return uc.repo.CreateReview(ctx, review)
 }

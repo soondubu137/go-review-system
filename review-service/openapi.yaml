@@ -55,10 +55,14 @@ components:
                     format: int32
                 content:
                     type: string
-                picture:
-                    type: string
-                video:
-                    type: string
+                pictures:
+                    type: array
+                    items:
+                        type: string
+                videos:
+                    type: array
+                    items:
+                        type: string
                 isAnonymous:
                     type: boolean
         GoogleProtobufAny:

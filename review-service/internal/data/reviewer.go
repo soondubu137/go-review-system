@@ -27,6 +27,15 @@ func (r *reviewerRepo) CreateReview(ctx context.Context, review *model.Review) (
 	return review, err
 }
 
+func (r *reviewerRepo) GetReviewByOrderID(ctx context.Context, orderID int64) (*model.Review, error) {
+	R := r.data.q.Review
+	review, err := R.WithContext(ctx).Where(R.OrderID.Eq(orderID)).First()
+	if err != nil {
+		return nil, err
+	}
+	return review, nil
+}
+
 func (r *reviewerRepo) Update(ctx context.Context, review *model.Review) (*model.Review, error) {
 	return review, nil
 }

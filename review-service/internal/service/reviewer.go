@@ -6,7 +6,6 @@ import (
 
 	pb "review-service/api/review/v1"
 	"review-service/internal/biz"
-	"review-service/internal/data/model"
 )
 
 type ReviewService struct {
@@ -20,7 +19,7 @@ func NewReviewService(uc *biz.ReviewerUsecase) *ReviewService {
 }
 
 func (s *ReviewService) CreateReview(ctx context.Context, req *pb.CreateReviewRequest) (*pb.CreateReviewReply, error) {
-	res, err := s.uc.CreateReview(ctx, &model.Review{})
+	res, err := s.uc.CreateReview(ctx, createReviewReq2Model(req))
 	return &pb.CreateReviewReply{ReviewID: strconv.FormatInt(res.ReviewID, 10)}, err
 }
 func (s *ReviewService) UpdateReview(ctx context.Context, req *pb.UpdateReviewRequest) (*pb.UpdateReviewReply, error) {
