@@ -1,6 +1,7 @@
 package server
 
 import (
+	appealpb "review-service/api/appeal/v1"
 	replypb "review-service/api/reply/v1"
 	reviewpb "review-service/api/review/v1"
 	"review-service/internal/conf"
@@ -32,5 +33,6 @@ func NewHTTPServer(c *conf.Server, reviewsvc *service.ReviewService, logger log.
 	srv := http.NewServer(opts...)
 	reviewpb.RegisterReviewHTTPServer(srv, reviewsvc)
 	replypb.RegisterReplyHTTPServer(srv, reviewsvc)
+	appealpb.RegisterAppealHTTPServer(srv, reviewsvc)
 	return srv
 }

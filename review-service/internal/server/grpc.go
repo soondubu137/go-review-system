@@ -1,6 +1,7 @@
 package server
 
 import (
+	appealpb "review-service/api/appeal/v1"
 	replypb "review-service/api/reply/v1"
 	reviewpb "review-service/api/review/v1"
 	"review-service/internal/conf"
@@ -32,5 +33,6 @@ func NewGRPCServer(c *conf.Server, reviewsvc *service.ReviewService, logger log.
 	srv := grpc.NewServer(opts...)
 	reviewpb.RegisterReviewServer(srv, reviewsvc)
 	replypb.RegisterReplyServer(srv, reviewsvc)
+	appealpb.RegisterAppealServer(srv, reviewsvc)
 	return srv
 }

@@ -95,6 +95,18 @@ func ErrorReviewAlreadyReplied(format string, args ...interface{}) *errors.Error
 	return errors.New(400, ErrorReason_REVIEW_ALREADY_REPLIED.String(), fmt.Sprintf(format, args...))
 }
 
+func IsAppealAlreadyResolved(err error) bool {
+	if err == nil {
+		return false
+	}
+	e := errors.FromError(err)
+	return e.Reason == ErrorReason_APPEAL_ALREADY_RESOLVED.String() && e.Code == 400
+}
+
+func ErrorAppealAlreadyResolved(format string, args ...interface{}) *errors.Error {
+	return errors.New(400, ErrorReason_APPEAL_ALREADY_RESOLVED.String(), fmt.Sprintf(format, args...))
+}
+
 func IsUnauthorizedReply(err error) bool {
 	if err == nil {
 		return false
@@ -105,4 +117,16 @@ func IsUnauthorizedReply(err error) bool {
 
 func ErrorUnauthorizedReply(format string, args ...interface{}) *errors.Error {
 	return errors.New(403, ErrorReason_UNAUTHORIZED_REPLY.String(), fmt.Sprintf(format, args...))
+}
+
+func IsUnauthorizedAppeal(err error) bool {
+	if err == nil {
+		return false
+	}
+	e := errors.FromError(err)
+	return e.Reason == ErrorReason_UNAUTHORIZED_APPEAL.String() && e.Code == 403
+}
+
+func ErrorUnauthorizedAppeal(format string, args ...interface{}) *errors.Error {
+	return errors.New(403, ErrorReason_UNAUTHORIZED_APPEAL.String(), fmt.Sprintf(format, args...))
 }

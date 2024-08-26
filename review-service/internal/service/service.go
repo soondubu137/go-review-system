@@ -1,6 +1,7 @@
 package service
 
 import (
+	appealpb "review-service/api/appeal/v1"
 	replypb "review-service/api/reply/v1"
 	reviewpb "review-service/api/review/v1"
 	"review-service/internal/biz"
@@ -14,14 +15,17 @@ var ProviderSet = wire.NewSet(NewReviewService)
 type ReviewService struct {
 	reviewpb.UnimplementedReviewServer
 	replypb.UnimplementedReplyServer
+	appealpb.UnimplementedAppealServer
 
 	reviewUC *biz.ReviewerUsecase
 	replyUC  *biz.ReplierUsecase
+	appealUC *biz.AppealerUsecase
 }
 
-func NewReviewService(reviewUC *biz.ReviewerUsecase, replyUC *biz.ReplierUsecase) *ReviewService {
+func NewReviewService(reviewUC *biz.ReviewerUsecase, replyUC *biz.ReplierUsecase, appealUC *biz.AppealerUsecase) *ReviewService {
 	return &ReviewService{
 		reviewUC: reviewUC,
 		replyUC:  replyUC,
+		appealUC: appealUC,
 	}
 }
