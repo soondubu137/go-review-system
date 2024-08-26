@@ -79,6 +79,8 @@ all:
 	make api;
 	make config;
 	make generate;
+	make validate;
+	make errors;
 
 # show help
 help:

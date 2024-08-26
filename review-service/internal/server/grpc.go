@@ -1,7 +1,8 @@
 package server
 
 import (
-	v1 "review-service/api/review/v1"
+	replypb "review-service/api/reply/v1"
+	reviewpb "review-service/api/review/v1"
 	"review-service/internal/conf"
 	"review-service/internal/service"
 
@@ -12,7 +13,7 @@ import (
 )
 
 // NewGRPCServer new a gRPC server.
-func NewGRPCServer(c *conf.Server, reviewer *service.ReviewService, logger log.Logger) *grpc.Server {
+func NewGRPCServer(c *conf.Server, reviewsvc *service.ReviewService, logger log.Logger) *grpc.Server {
 	var opts = []grpc.ServerOption{
 		grpc.Middleware(
 			recovery.Recovery(),
@@ -29,6 +30,7 @@ func NewGRPCServer(c *conf.Server, reviewer *service.ReviewService, logger log.L
 		opts = append(opts, grpc.Timeout(c.Grpc.Timeout.AsDuration()))
 	}
 	srv := grpc.NewServer(opts...)
-	v1.RegisterReviewServer(srv, reviewer)
+	reviewpb.RegisterReviewServer(srv, reviewsvc)
+	replypb.RegisterReplyServer(srv, reviewsvc)
 	return srv
 }

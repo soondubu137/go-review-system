@@ -1,8 +1,8 @@
 package model
 
 type Reply struct {
-	ReviewID int64
-	UserID   int64
+	ReviewID string
+	UserID   string
 	Content  string
 	Pictures []string
 	Videos   []string

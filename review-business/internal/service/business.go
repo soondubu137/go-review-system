@@ -5,6 +5,7 @@ import (
 
 	pb "review-business/api/business/v1"
 	"review-business/internal/biz"
+	"review-business/internal/data/model"
 )
 
 type BusinessService struct {
@@ -18,5 +19,17 @@ func NewBusinessService(uc *biz.BusinessUsecase) *BusinessService {
 }
 
 func (s *BusinessService) CreateReply(ctx context.Context, req *pb.CreateReplyRequest) (*pb.CreateReplyReply, error) {
-	return &pb.CreateReplyReply{}, nil
+	replyID, err := s.uc.CreateReply(ctx, &model.Reply{
+		ReviewID: req.ReviewID,
+		UserID:   req.UserID,
+		Content:  req.Content,
+		Pictures: req.Pictures,
+		Videos:   req.Videos,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return &pb.CreateReplyReply{
+		ReplyID: replyID,
+	}, err
 }

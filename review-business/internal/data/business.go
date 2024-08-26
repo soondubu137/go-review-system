@@ -2,6 +2,7 @@ package data
 
 import (
 	"context"
+	pb "review-business/api/reply/v1"
 	"review-business/internal/biz"
 	"review-business/internal/data/model"
 
@@ -20,6 +21,16 @@ func NewBusinessRepo(data *Data, logger log.Logger) biz.BusinessRepo {
 	}
 }
 
-func (r *businessRepo) CreateReply(ctx context.Context, reply *model.Reply) (*model.Reply, error) {
-	return nil, nil
+func (r *businessRepo) CreateReply(ctx context.Context, reply *model.Reply) (string, error) {
+	res, err := r.data.client.CreateReply(ctx, &pb.CreateReplyRequest{
+		ReviewID: reply.ReviewID,
+		UserID:   reply.UserID,
+		Content:  reply.Content,
+		Pictures: reply.Pictures,
+		Videos:   reply.Videos,
+	})
+	if err != nil {
+		return "", err
+	}
+	return res.ReplyID, nil
 }

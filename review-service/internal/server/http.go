@@ -1,7 +1,8 @@
 package server
 
 import (
-	v1 "review-service/api/review/v1"
+	replypb "review-service/api/reply/v1"
+	reviewpb "review-service/api/review/v1"
 	"review-service/internal/conf"
 	"review-service/internal/service"
 
@@ -12,7 +13,7 @@ import (
 )
 
 // NewHTTPServer new an HTTP server.
-func NewHTTPServer(c *conf.Server, reviewer *service.ReviewService, logger log.Logger) *http.Server {
+func NewHTTPServer(c *conf.Server, reviewsvc *service.ReviewService, logger log.Logger) *http.Server {
 	var opts = []http.ServerOption{
 		http.Middleware(
 			recovery.Recovery(),
@@ -29,6 +30,7 @@ func NewHTTPServer(c *conf.Server, reviewer *service.ReviewService, logger log.L
 		opts = append(opts, http.Timeout(c.Http.Timeout.AsDuration()))
 	}
 	srv := http.NewServer(opts...)
-	v1.RegisterReviewHTTPServer(srv, reviewer)
+	reviewpb.RegisterReviewHTTPServer(srv, reviewsvc)
+	replypb.RegisterReplyHTTPServer(srv, reviewsvc)
 	return srv
 }
