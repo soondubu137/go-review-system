@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package api.reply.v1;
+
+import "google/api/annotations.proto";
+import "validate/validate.proto";
+
+option go_package = "review-service/api/reply/v1;v1";
+
+service Reply {
+	rpc CreateReply (CreateReplyRequest) returns (CreateReplyReply) {
+        option (google.api.http) = {
+            post: "/v1/reply",
+            body: "*"
+        };
+    };
+	rpc UpdateReply (UpdateReplyRequest) returns (UpdateReplyReply);
+	rpc DeleteReply (DeleteReplyRequest) returns (DeleteReplyReply);
+	rpc GetReply (GetReplyRequest) returns (GetReplyReply);
+	rpc ListReply (ListReplyRequest) returns (ListReplyReply);
+}
+
+message CreateReplyRequest {
+    string          reviewID = 1;
+    string          userID = 2;
+    string          content = 3 [(validate.rules).string = {min_len: 1, max_len: 1024}];
+    repeated string pictures = 4;
+    repeated string videos = 5;
+}
+message CreateReplyReply {
+    string replyID = 1;
+}
+
+message UpdateReplyRequest {}
+message UpdateReplyReply {}
+
+message DeleteReplyRequest {}
+message DeleteReplyReply {}
+
+message GetReplyRequest {}
+message GetReplyReply {}
+
+message ListReplyRequest {}
+message ListReplyReply {}

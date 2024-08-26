@@ -1,10 +1,9 @@
 package server
 
 import (
-	replypb "review-service/api/reply/v1"
-	reviewpb "review-service/api/review/v1"
-	"review-service/internal/conf"
-	"review-service/internal/service"
+	v1 "review-business/api/business/v1"
+	"review-business/internal/conf"
+	"review-business/internal/service"
 
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
@@ -13,7 +12,7 @@ import (
 )
 
 // NewGRPCServer new a gRPC server.
-func NewGRPCServer(c *conf.Server, reviewsvc *service.ReviewService, logger log.Logger) *grpc.Server {
+func NewGRPCServer(c *conf.Server, business *service.BusinessService, logger log.Logger) *grpc.Server {
 	var opts = []grpc.ServerOption{
 		grpc.Middleware(
 			recovery.Recovery(),
@@ -30,7 +29,6 @@ func NewGRPCServer(c *conf.Server, reviewsvc *service.ReviewService, logger log.
 		opts = append(opts, grpc.Timeout(c.Grpc.Timeout.AsDuration()))
 	}
 	srv := grpc.NewServer(opts...)
-	reviewpb.RegisterReviewServer(srv, reviewsvc)
-	replypb.RegisterReplyServer(srv, reviewsvc)
+	v1.RegisterBusinessServer(srv, business)
 	return srv
 }

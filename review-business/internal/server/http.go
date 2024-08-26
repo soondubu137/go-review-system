@@ -1,10 +1,9 @@
 package server
 
 import (
-	replypb "review-service/api/reply/v1"
-	reviewpb "review-service/api/review/v1"
-	"review-service/internal/conf"
-	"review-service/internal/service"
+	v1 "review-business/api/business/v1"
+	"review-business/internal/conf"
+	"review-business/internal/service"
 
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
@@ -13,7 +12,7 @@ import (
 )
 
 // NewHTTPServer new an HTTP server.
-func NewHTTPServer(c *conf.Server, reviewsvc *service.ReviewService, logger log.Logger) *http.Server {
+func NewHTTPServer(c *conf.Server, business *service.BusinessService, logger log.Logger) *http.Server {
 	var opts = []http.ServerOption{
 		http.Middleware(
 			recovery.Recovery(),
@@ -30,7 +29,6 @@ func NewHTTPServer(c *conf.Server, reviewsvc *service.ReviewService, logger log.
 		opts = append(opts, http.Timeout(c.Http.Timeout.AsDuration()))
 	}
 	srv := http.NewServer(opts...)
-	reviewpb.RegisterReviewHTTPServer(srv, reviewsvc)
-	replypb.RegisterReplyHTTPServer(srv, reviewsvc)
+	v1.RegisterBusinessHTTPServer(srv, business)
 	return srv
 }
