@@ -2,6 +2,7 @@ package service
 
 import (
 	"encoding/json"
+	appealpb "review-service/api/appeal/v1"
 	replypb "review-service/api/reply/v1"
 	reviewpb "review-service/api/review/v1"
 	"review-service/internal/data/model"
@@ -62,4 +63,23 @@ func createReplyReq2Model(req *replypb.CreateReplyRequest) *model.Reply {
 		reply.Videos = marshalStrSlice(req.Videos)
 	}
 	return &reply
+}
+
+func createAppealReq2Model(req *appealpb.CreateAppealRequest) *model.Appeal {
+	appeal := model.Appeal{
+		ReviewID: parseInt64(req.ReviewID),
+		SellerID: parseInt64(req.UserID),
+		Content:  req.Content,
+		Pictures: "[]",
+		Videos:   "[]",
+		ExtJSON:  "{}",
+		CtrlJSON: "{}",
+	}
+	if len(req.Pictures) > 0 {
+		appeal.Pictures = marshalStrSlice(req.Pictures)
+	}
+	if len(req.Videos) > 0 {
+		appeal.Videos = marshalStrSlice(req.Videos)
+	}
+	return &appeal
 }

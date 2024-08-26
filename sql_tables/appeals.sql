@@ -21,6 +21,6 @@ CREATE TABLE `appeals` (
     `ctrl_json` JSON NOT NULL COMMENT 'Control information',
     PRIMARY KEY (`id`),
     KEY `idx_appeal_id` (`appeal_id`),
-    KEY `idx_review_id` (`review_id`),
+    UNIQUE KEY `idx_review_id` (`review_id`),
     KEY `idx_seller_id` (`seller_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

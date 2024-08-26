@@ -2,7 +2,8 @@ package data
 
 import (
 	"context"
-	pb "review-business/api/reply/v1"
+	appealpb "review-business/api/appeal/v1"
+	replypb "review-business/api/reply/v1"
 	"review-business/internal/biz"
 	"review-business/internal/data/model"
 
@@ -22,7 +23,7 @@ func NewBusinessRepo(data *Data, logger log.Logger) biz.BusinessRepo {
 }
 
 func (r *businessRepo) CreateReply(ctx context.Context, reply *model.Reply) (string, error) {
-	res, err := r.data.client.CreateReply(ctx, &pb.CreateReplyRequest{
+	res, err := r.data.replyClient.CreateReply(ctx, &replypb.CreateReplyRequest{
 		ReviewID: reply.ReviewID,
 		UserID:   reply.UserID,
 		Content:  reply.Content,
@@ -33,4 +34,19 @@ func (r *businessRepo) CreateReply(ctx context.Context, reply *model.Reply) (str
 		return "", err
 	}
 	return res.ReplyID, nil
+}
+
+func (r *businessRepo) CreateAppeal(ctx context.Context, appeal *model.Appeal) (string, string, error) {
+	res, err := r.data.appealClient.CreateAppeal(ctx, &appealpb.CreateAppealRequest{
+		ReviewID: appeal.ReviewID,
+		UserID:   appeal.UserID,
+		Reason:   appeal.Reason,
+		Content:  appeal.Content,
+		Pictures: appeal.Pictures,
+		Videos:   appeal.Videos,
+	})
+	if err != nil {
+		return "", "", err
+	}
+	return res.AppealID, res.Status, nil
 }

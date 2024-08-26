@@ -19,15 +19,18 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
+const OperationBusinessCreateAppeal = "/api.business.v1.Business/CreateAppeal"
 const OperationBusinessCreateReply = "/api.business.v1.Business/CreateReply"
 
 type BusinessHTTPServer interface {
+	CreateAppeal(context.Context, *CreateAppealRequest) (*CreateAppealReply, error)
 	CreateReply(context.Context, *CreateReplyRequest) (*CreateReplyReply, error)
 }
 
 func RegisterBusinessHTTPServer(s *http.Server, srv BusinessHTTPServer) {
 	r := s.Route("/")
 	r.POST("/v1/reply", _Business_CreateReply0_HTTP_Handler(srv))
+	r.POST("/v1/appeal", _Business_CreateAppeal0_HTTP_Handler(srv))
 }
 
 func _Business_CreateReply0_HTTP_Handler(srv BusinessHTTPServer) func(ctx http.Context) error {
@@ -52,7 +55,30 @@ func _Business_CreateReply0_HTTP_Handler(srv BusinessHTTPServer) func(ctx http.C
 	}
 }
 
+func _Business_CreateAppeal0_HTTP_Handler(srv BusinessHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in CreateAppealRequest
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationBusinessCreateAppeal)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.CreateAppeal(ctx, req.(*CreateAppealRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*CreateAppealReply)
+		return ctx.Result(200, reply)
+	}
+}
+
 type BusinessHTTPClient interface {
+	CreateAppeal(ctx context.Context, req *CreateAppealRequest, opts ...http.CallOption) (rsp *CreateAppealReply, err error)
 	CreateReply(ctx context.Context, req *CreateReplyRequest, opts ...http.CallOption) (rsp *CreateReplyReply, err error)
 }
 
@@ -62,6 +88,19 @@ type BusinessHTTPClientImpl struct {
 
 func NewBusinessHTTPClient(client *http.Client) BusinessHTTPClient {
 	return &BusinessHTTPClientImpl{client}
+}
+
+func (c *BusinessHTTPClientImpl) CreateAppeal(ctx context.Context, in *CreateAppealRequest, opts ...http.CallOption) (*CreateAppealReply, error) {
+	var out CreateAppealReply
+	pattern := "/v1/appeal"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation(OperationBusinessCreateAppeal))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, nil
 }
 
 func (c *BusinessHTTPClientImpl) CreateReply(ctx context.Context, in *CreateReplyRequest, opts ...http.CallOption) (*CreateReplyReply, error) {

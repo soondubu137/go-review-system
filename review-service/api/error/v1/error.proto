@@ -17,5 +17,7 @@ enum ErrorReason {
 
     ORDER_ALREADY_REVIEWED = 100 [(errors.code) = 400];
     REVIEW_ALREADY_REPLIED = 101 [(errors.code) = 400];
-    UNAUTHORIZED_REPLY = 102 [(errors.code) = 403];
+    APPEAL_ALREADY_RESOLVED = 102 [(errors.code) = 400];
+    UNAUTHORIZED_REPLY = 103 [(errors.code) = 403];
+    UNAUTHORIZED_APPEAL = 104 [(errors.code) = 403];
 }
