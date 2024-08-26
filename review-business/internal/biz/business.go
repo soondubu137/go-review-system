@@ -9,6 +9,7 @@ import (
 
 type BusinessRepo interface {
 	CreateReply(context.Context, *model.Reply) (string, error)
+	CreateAppeal(context.Context, *model.Appeal) (string, string, error)
 }
 
 type BusinessUsecase struct {
@@ -22,4 +23,8 @@ func NewBusinessUsecase(repo BusinessRepo, logger log.Logger) *BusinessUsecase {
 
 func (uc *BusinessUsecase) CreateReply(ctx context.Context, reply *model.Reply) (string, error) {
 	return uc.repo.CreateReply(ctx, reply)
+}
+
+func (uc *BusinessUsecase) CreateAppeal(ctx context.Context, appeal *model.Appeal) (string, string, error) {
+	return uc.repo.CreateAppeal(ctx, appeal)
 }

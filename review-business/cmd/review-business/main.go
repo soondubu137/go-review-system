@@ -22,7 +22,7 @@ var (
 	// Name is the name of the compiled software.
 	Name string = "review-business"
 	// Version is the version of the compiled software.
-	Version string = "v0.1.0"
+	Version string = "v0.1.1"
 	// flagconf is the config flag.
 	flagconf string
 

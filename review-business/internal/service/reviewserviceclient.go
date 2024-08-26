@@ -2,7 +2,8 @@ package service
 
 import (
 	"context"
-	pb "review-business/api/reply/v1"
+	appealpb "review-business/api/appeal/v1"
+	replypb "review-business/api/reply/v1"
 	"review-business/internal/conf"
 
 	consul "github.com/go-kratos/kratos/contrib/registry/consul/v2"
@@ -26,7 +27,7 @@ func NewDiscovery(c *conf.Registry) registry.Discovery {
 	return consul.New(client)
 }
 
-func NewReviewServiceClient(disc registry.Discovery, c *conf.Registry) pb.ReplyClient {
+func NewReplyClient(disc registry.Discovery, c *conf.Registry) replypb.ReplyClient {
 	conn, err := grpc.DialInsecure(
 		context.Background(),
 		grpc.WithEndpoint("discovery:///"+c.ServiceName),
@@ -39,5 +40,21 @@ func NewReviewServiceClient(disc registry.Discovery, c *conf.Registry) pb.ReplyC
 	if err != nil {
 		panic(err)
 	}
-	return pb.NewReplyClient(conn)
+	return replypb.NewReplyClient(conn)
+}
+
+func NewAppealClient(disc registry.Discovery, c *conf.Registry) appealpb.AppealClient {
+	conn, err := grpc.DialInsecure(
+		context.Background(),
+		grpc.WithEndpoint("discovery:///"+c.ServiceName),
+		grpc.WithDiscovery(disc),
+		grpc.WithMiddleware(
+			recovery.Recovery(),
+			validate.Validator(),
+		),
+	)
+	if err != nil {
+		panic(err)
+	}
+	return appealpb.NewAppealClient(conn)
 }

@@ -6,6 +6,30 @@ info:
     title: Business API
     version: 0.0.1
 paths:
+    /v1/appeal:
+        post:
+            tags:
+                - Business
+            operationId: Business_CreateAppeal
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateAppealRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CreateAppealReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
     /v1/reply:
         post:
             tags:
@@ -32,6 +56,32 @@ paths:
                                 $ref: '#/components/schemas/Status'
 components:
     schemas:
+        CreateAppealReply:
+            type: object
+            properties:
+                appealID:
+                    type: string
+                status:
+                    type: string
+        CreateAppealRequest:
+            type: object
+            properties:
+                reviewID:
+                    type: string
+                userID:
+                    type: string
+                reason:
+                    type: string
+                content:
+                    type: string
+                pictures:
+                    type: array
+                    items:
+                        type: string
+                videos:
+                    type: array
+                    items:
+                        type: string
         CreateReplyReply:
             type: object
             properties:

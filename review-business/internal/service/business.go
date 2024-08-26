@@ -33,3 +33,21 @@ func (s *BusinessService) CreateReply(ctx context.Context, req *pb.CreateReplyRe
 		ReplyID: replyID,
 	}, err
 }
+
+func (s *BusinessService) CreateAppeal(ctx context.Context, req *pb.CreateAppealRequest) (*pb.CreateAppealReply, error) {
+	appealID, status, err := s.uc.CreateAppeal(ctx, &model.Appeal{
+		ReviewID: req.ReviewID,
+		UserID:   req.UserID,
+		Reason:   req.Reason,
+		Content:  req.Content,
+		Pictures: req.Pictures,
+		Videos:   req.Videos,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return &pb.CreateAppealReply{
+		AppealID: appealID,
+		Status:   status,
+	}, err
+}
