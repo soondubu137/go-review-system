@@ -8,6 +8,9 @@ import (
 	"github.com/google/wire"
 )
 
+// ProviderSet is service providers.
+var ProviderSet = wire.NewSet(NewReviewService)
+
 type ReviewService struct {
 	reviewpb.UnimplementedReviewServer
 	replypb.UnimplementedReplyServer
@@ -22,6 +25,3 @@ func NewReviewService(reviewUC *biz.ReviewerUsecase, replyUC *biz.ReplierUsecase
 		replyUC:  replyUC,
 	}
 }
-
-// ProviderSet is service providers.
-var ProviderSet = wire.NewSet(NewReviewService)
