@@ -14,6 +14,12 @@ service Appeal {
             body: "*"
         };
     };
+    rpc ResolveAppeal (ResolveAppealRequest) returns (ResolveAppealReply) {
+        option (google.api.http) = {
+            post: "/v1/appeal/resolve",
+            body: "*"
+        };
+    };
 }
 
 message CreateAppealRequest {
@@ -25,6 +31,21 @@ message CreateAppealRequest {
     repeated string videos = 6;
 }
 message CreateAppealReply {
+    string appealID = 1;
+    string status = 2;
+}
+
+message ResolveAppealRequest {
+    string          appealID = 1;
+    string          operatorID = 2;
+    string          reason = 3 [(validate.rules).string = {min_len: 1, max_len: 250}];
+    string          content = 4 [(validate.rules).string = {min_len: 1, max_len: 1024}];
+    repeated string pictures = 5;
+    repeated string videos = 6;
+    string          status = 7;
+}
+
+message ResolveAppealReply {
     string appealID = 1;
     string status = 2;
 }

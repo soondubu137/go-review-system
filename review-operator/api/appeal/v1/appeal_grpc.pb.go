@@ -19,7 +19,8 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Appeal_CreateAppeal_FullMethodName = "/api.appeal.v1.Appeal/CreateAppeal"
+	Appeal_CreateAppeal_FullMethodName  = "/api.appeal.v1.Appeal/CreateAppeal"
+	Appeal_ResolveAppeal_FullMethodName = "/api.appeal.v1.Appeal/ResolveAppeal"
 )
 
 // AppealClient is the client API for Appeal service.
@@ -27,6 +28,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AppealClient interface {
 	CreateAppeal(ctx context.Context, in *CreateAppealRequest, opts ...grpc.CallOption) (*CreateAppealReply, error)
+	ResolveAppeal(ctx context.Context, in *ResolveAppealRequest, opts ...grpc.CallOption) (*ResolveAppealReply, error)
 }
 
 type appealClient struct {
@@ -47,11 +49,22 @@ func (c *appealClient) CreateAppeal(ctx context.Context, in *CreateAppealRequest
 	return out, nil
 }
 
+func (c *appealClient) ResolveAppeal(ctx context.Context, in *ResolveAppealRequest, opts ...grpc.CallOption) (*ResolveAppealReply, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ResolveAppealReply)
+	err := c.cc.Invoke(ctx, Appeal_ResolveAppeal_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AppealServer is the server API for Appeal service.
 // All implementations must embed UnimplementedAppealServer
 // for forward compatibility.
 type AppealServer interface {
 	CreateAppeal(context.Context, *CreateAppealRequest) (*CreateAppealReply, error)
+	ResolveAppeal(context.Context, *ResolveAppealRequest) (*ResolveAppealReply, error)
 	mustEmbedUnimplementedAppealServer()
 }
 
@@ -64,6 +77,9 @@ type UnimplementedAppealServer struct{}
 
 func (UnimplementedAppealServer) CreateAppeal(context.Context, *CreateAppealRequest) (*CreateAppealReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateAppeal not implemented")
+}
+func (UnimplementedAppealServer) ResolveAppeal(context.Context, *ResolveAppealRequest) (*ResolveAppealReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ResolveAppeal not implemented")
 }
 func (UnimplementedAppealServer) mustEmbedUnimplementedAppealServer() {}
 func (UnimplementedAppealServer) testEmbeddedByValue()                {}
@@ -104,6 +120,24 @@ func _Appeal_CreateAppeal_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Appeal_ResolveAppeal_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ResolveAppealRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AppealServer).ResolveAppeal(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Appeal_ResolveAppeal_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AppealServer).ResolveAppeal(ctx, req.(*ResolveAppealRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Appeal_ServiceDesc is the grpc.ServiceDesc for Appeal service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -114,6 +148,10 @@ var Appeal_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateAppeal",
 			Handler:    _Appeal_CreateAppeal_Handler,
+		},
+		{
+			MethodName: "ResolveAppeal",
+			Handler:    _Appeal_ResolveAppeal_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -7,6 +7,7 @@ import (
 	reviewpb "review-service/api/review/v1"
 	"review-service/internal/data/model"
 	"strconv"
+	"time"
 )
 
 func parseInt64(s string) int64 {
@@ -62,6 +63,7 @@ func createReplyReq2Model(req *replypb.CreateReplyRequest) *model.Reply {
 	if len(req.Videos) > 0 {
 		reply.Videos = marshalStrSlice(req.Videos)
 	}
+
 	return &reply
 }
 
@@ -81,5 +83,25 @@ func createAppealReq2Model(req *appealpb.CreateAppealRequest) *model.Appeal {
 	if len(req.Videos) > 0 {
 		appeal.Videos = marshalStrSlice(req.Videos)
 	}
+
 	return &appeal
+}
+
+func updateAppealWithResolution(req *appealpb.ResolveAppealRequest, appeal *model.Appeal) *model.Appeal {
+	operatorID := parseInt64(req.OperatorID)
+	currTime := time.Now()
+
+	appeal.OpProcessBy = &operatorID
+	appeal.OpProcessAt = &currTime
+	appeal.Reason = req.Reason
+	appeal.Content = req.Content
+	appeal.Status = req.Status
+	if len(req.Pictures) > 0 {
+		appeal.Pictures = marshalStrSlice(req.Pictures)
+	}
+	if len(req.Videos) > 0 {
+		appeal.Videos = marshalStrSlice(req.Videos)
+	}
+
+	return appeal
 }

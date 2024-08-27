@@ -12,6 +12,8 @@ import (
 type AppealerRepo interface {
 	CreateAppeal(context.Context, *model.Appeal) (*model.Appeal, error)
 	FindByReviewID(context.Context, int64) (*model.Appeal, error)
+	FindByID(context.Context, int64) (*model.Appeal, error)
+	ResolveAppeal(context.Context, *model.Appeal) (*model.Appeal, error)
 }
 
 type AppealerUsecase struct {
@@ -61,4 +63,14 @@ func (uc *AppealerUsecase) CreateAppeal(ctx context.Context, appeal *model.Appea
 	}
 
 	return uc.repo.CreateAppeal(ctx, appeal)
+}
+
+func (uc *AppealerUsecase) FindByID(ctx context.Context, appealID int64) (*model.Appeal, error) {
+	uc.log.WithContext(ctx).Debugf("[BIZ] FindByID - req: %v", appealID)
+	return uc.repo.FindByID(ctx, appealID)
+}
+
+func (uc *AppealerUsecase) ResolveAppeal(ctx context.Context, appeal *model.Appeal) (*model.Appeal, error) {
+	uc.log.WithContext(ctx).Debugf("[BIZ] ResolveAppeal - req: %v", appeal)
+	return uc.repo.ResolveAppeal(ctx, appeal)
 }

@@ -30,6 +30,30 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Status'
+    /v1/appeal/resolve:
+        post:
+            tags:
+                - Appeal
+            operationId: Appeal_ResolveAppeal
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ResolveAppealRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ResolveAppealReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
 components:
     schemas:
         CreateAppealReply:
@@ -66,6 +90,34 @@ components:
                     description: The type of the serialized message.
             additionalProperties: true
             description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+        ResolveAppealReply:
+            type: object
+            properties:
+                appealID:
+                    type: string
+                status:
+                    type: string
+        ResolveAppealRequest:
+            type: object
+            properties:
+                appealID:
+                    type: string
+                operatorID:
+                    type: string
+                reason:
+                    type: string
+                content:
+                    type: string
+                pictures:
+                    type: array
+                    items:
+                        type: string
+                videos:
+                    type: array
+                    items:
+                        type: string
+                status:
+                    type: string
         Status:
             type: object
             properties:
