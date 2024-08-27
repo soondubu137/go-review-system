@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package api.operator.v1;
+
+import "google/api/annotations.proto";
+import "validate/validate.proto";
+
+option go_package = "review-operator/api/operator/v1;v1";
+
+service Operator {
+    rpc ResolveAppeal (ResolveAppealRequest) returns (ResolveAppealReply) {
+        option (google.api.http) = {
+            post: "/v1/appeal/resolve",
+            body: "*"
+        };
+    };
+}
+
+message ResolveAppealRequest {
+    string          appealID = 1;
+    string          operatorID = 2;
+    string          reason = 3 [(validate.rules).string = {min_len: 1, max_len: 250}];
+    string          content = 4 [(validate.rules).string = {min_len: 1, max_len: 1024}];
+    repeated string pictures = 5;
+    repeated string videos = 6;
+    string          status = 7;
+}
+
+message ResolveAppealReply {
+    string appealID = 1;
+    string status = 2;
+}
