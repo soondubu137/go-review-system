@@ -2,7 +2,7 @@ package model
 
 type Resolution struct {
 	AppealID   string
-	operatorID string
+	OperatorID string
 	Reason     string
 	Content    string
 	Pictures   []string

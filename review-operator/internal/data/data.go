@@ -1,6 +1,7 @@
 package data
 
 import (
+	pb "review-operator/api/appeal/v1"
 	"review-operator/internal/conf"
 
 	"github.com/go-kratos/kratos/v2/log"
@@ -12,13 +13,14 @@ var ProviderSet = wire.NewSet(NewData, NewOperatorRepo)
 
 // Data .
 type Data struct {
-	// TODO wrapped database client
+	appealClient pb.AppealClient
+	log          *log.Helper
 }
 
 // NewData .
-func NewData(c *conf.Data, logger log.Logger) (*Data, func(), error) {
+func NewData(c *conf.Data, ac pb.AppealClient, logger log.Logger) (*Data, func(), error) {
 	cleanup := func() {
 		log.NewHelper(logger).Info("closing the data resources")
 	}
-	return &Data{}, cleanup, nil
+	return &Data{appealClient: ac, log: log.NewHelper(logger)}, cleanup, nil
 }
