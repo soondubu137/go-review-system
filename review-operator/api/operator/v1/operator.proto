@@ -1,38 +1,19 @@
 syntax = "proto3";
 
-package api.appeal.v1;
+package api.operator.v1;
 
 import "google/api/annotations.proto";
 import "validate/validate.proto";
 
-option go_package = "review-service/api/appeal/v1;v1";
+option go_package = "review-operator/api/operator/v1;v1";
 
-service Appeal {
-    rpc CreateAppeal (CreateAppealRequest) returns (CreateAppealReply) {
-        option (google.api.http) = {
-            post: "/v1/appeal",
-            body: "*"
-        };
-    };
+service Operator {
     rpc ResolveAppeal (ResolveAppealRequest) returns (ResolveAppealReply) {
         option (google.api.http) = {
             post: "/v1/appeal/resolve",
             body: "*"
         };
     };
-}
-
-message CreateAppealRequest {
-    string          reviewID = 1;
-    string          userID = 2;
-    string          reason = 3 [(validate.rules).string = {min_len: 1, max_len: 250}];
-    string          content = 4 [(validate.rules).string = {min_len: 1, max_len: 1024}];
-    repeated string pictures = 5;
-    repeated string videos = 6;
-}
-message CreateAppealReply {
-    string appealID = 1;
-    string status = 2;
 }
 
 message ResolveAppealRequest {

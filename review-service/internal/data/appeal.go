@@ -37,6 +37,15 @@ func (r *appealerRepo) CreateAppeal(ctx context.Context, appeal *model.Appeal) (
 	return appeal, err
 }
 
+func (r *appealerRepo) FindByID(ctx context.Context, appealID int64) (*model.Appeal, error) {
+	Appeal := r.data.q.Appeal
+	res, err := Appeal.WithContext(ctx).Where(Appeal.AppealID.Eq(appealID)).First()
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
+}
+
 func (r *appealerRepo) FindByReviewID(ctx context.Context, reviewID int64) (*model.Appeal, error) {
 	Appeal := r.data.q.Appeal
 	res, err := Appeal.WithContext(ctx).Where(Appeal.ReviewID.Eq(reviewID)).First()
@@ -44,4 +53,10 @@ func (r *appealerRepo) FindByReviewID(ctx context.Context, reviewID int64) (*mod
 		return nil, err
 	}
 	return res, nil
+}
+
+func (r *appealerRepo) ResolveAppeal(ctx context.Context, appeal *model.Appeal) (*model.Appeal, error) {
+	Appeal := r.data.q.Appeal
+	_, err := Appeal.WithContext(ctx).Where(Appeal.AppealID.Eq(appeal.AppealID)).Updates(appeal)
+	return appeal, err
 }
