@@ -2,7 +2,7 @@
 
 This *educational* project implements a basic review system as a microservice in [Go](https://go.dev).
 
-I'm still working on `review-operator`.
+I'm still working on `review-customer`.
 
 ## Introduction
 
